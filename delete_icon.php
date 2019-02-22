@@ -22,23 +22,28 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die;
+include ('../../config.php');
+include ('lib.php');
+defined('MOODLE_INTERNAL') || die('');
 
-require_once($CFG->dirroot."/lib/formslib.php");
+$deleteicons = get_string('changeicons', 'local_iconchange');
 
-class edit_icon_form extends moodleform
-{
+$PAGE->set_url('/local/iconchange/delete_icon.php');
+$PAGE->set_context(context_system::instance());
+$PAGE->set_title($deleteicons);
+$PAGE->set_heading($deleteicons);
 
-    public function definition()
-    {
-        $mform = $this->_form;
-        $activityname = !empty(filter_input(INPUT_GET, 'activityname')) ? filter_input(INPUT_GET, 'activityname') : '-';
+$deleteiconname = filter_input(INPUT_GET, 'activityname');
 
-        $mform->addElement('hidden', 'activityname', $activityname);
-        $mform->setType('activityname', PARAM_TEXT);
-        $mform->addElement('filepicker', 'newicon', get_string('file'), null,
-            ['accepted_types' => 'png']);
-        $mform->setType('newicon', PARAM_RAW);
-        $this->add_action_buttons(true, get_string('save'));
-    }
+// TO DO. Boost.
+$path = "{$CFG->dirroot}/theme/{$CFG->theme}/pix_plugins/mod/";
+
+$filename =  $path . $deleteiconname.'/icon.png';
+
+if (!file_exists($filename)) {
+    redirect($CFG->wwwroot . '/local/iconchange/list_icon.php', get_string('iconnotdeleted', 'local_iconchange'), null, \core\output\notification::NOTIFY_ERROR);
+} else {
+    unlink($filename);
+    theme_reset_all_caches();
+    redirect($CFG->wwwroot . '/local/iconchange/list_icon.php', get_string('icondeleted', 'local_iconchange'), null, \core\output\notification::NOTIFY_SUCCESS);
 }
