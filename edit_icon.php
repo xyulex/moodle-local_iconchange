@@ -42,15 +42,22 @@ $mform = new edit_icon_form();
 if ($mform->is_cancelled()) {
     redirect(new moodle_url('/local/iconchange/list_icon.php'));
 } else if ($fromform = $mform->get_data()) {
+    
+    $theme_path = $CFG->dirroot.'/theme/'.$CFG->theme; 
 
-    if (!file_exists($CFG->dirroot.'/theme/'.$CFG->theme.'/pix_plugins/mod/'.$activityname)) {
-        if (!mkdir($CFG->dirroot.'/theme/'.$CFG->theme.'/pix_plugins/mod/'.$activityname, 0777)) {
-            echo $OUTPUT->error_text(get_string('cantcreatedirectory', 'local_iconchange'));
+    if (!file_exists($theme_path.'/pix_plugins/mod/'.$activityname)) {
+        if (!file_exists($theme_path.'/pix_plugins/')) {
+            mkdir($theme_path.'/pix_plugins/', 0777);
+        }
+        if (!file_exists($theme_path.'/pix_plugins/mod/')) {
+            mkdir($theme_path.'/pix_plugins/mod/', 0777);
+        }
+        if (!file_exists($theme_path.'/pix_plugins/mod/'.$activityname)) {
+            mkdir($theme_path.'/pix_plugins/mod/'.$activityname, 0777);
         }
     }
 
-    // To do. BOOST
-    $success = $mform->save_file('newicon', $CFG->dirroot.'/theme/'.$CFG->theme.'/pix_plugins/mod/'.$activityname.'/icon.png', true);
+    $success = $mform->save_file('newicon', $theme_path.'/pix_plugins/mod/'.$activityname.'/icon.png', true);
     theme_reset_all_caches();
     redirect($CFG->wwwroot . '/local/iconchange/list_icon.php', get_string('iconupdated', 'local_iconchange'), null, \core\output\notification::NOTIFY_SUCCESS);
 } else {
