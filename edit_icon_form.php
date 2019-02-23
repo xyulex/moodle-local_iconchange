@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/** 
+/**
  * Icon changer
  * A Moodle plugin for changing your theme icons
  * @package     local
@@ -29,8 +29,7 @@ require_once($CFG->dirroot."/lib/formslib.php");
 class edit_icon_form extends moodleform
 {
 
-    public function definition()
-    {
+    public function definition() {
         $mform = $this->_form;
         $activityname = !empty(filter_input(INPUT_GET, 'activityname')) ? filter_input(INPUT_GET, 'activityname') : '-';
 

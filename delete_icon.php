@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/** 
+/**
  * Icon changer
  * A Moodle plugin for changing your theme icons
  * @package     local
@@ -22,10 +22,11 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-include ('../../config.php');
-include ('lib.php');
+require('../../config.php');
+require('lib.php');
 defined('MOODLE_INTERNAL') || die('');
 
+require_login();
 $deleteicons = get_string('changeicons', 'local_iconchange');
 
 $PAGE->set_url('/local/iconchange/delete_icon.php');
@@ -38,12 +39,14 @@ $deleteiconname = filter_input(INPUT_GET, 'activityname');
 // TO DO. Boost.
 $path = "{$CFG->dirroot}/theme/{$CFG->theme}/pix_plugins/mod/";
 
-$filename =  $path . $deleteiconname.'/icon.png';
+$filename = $path . $deleteiconname.'/icon.png';
 
 if (!file_exists($filename)) {
-    redirect($CFG->wwwroot . '/local/iconchange/list_icon.php', get_string('iconnotdeleted', 'local_iconchange'), null, \core\output\notification::NOTIFY_ERROR);
+    redirect($CFG->wwwroot . '/local/iconchange/list_icon.php',
+        get_string('iconnotdeleted', 'local_iconchange'), null, \core\output\notification::NOTIFY_ERROR);
 } else {
     unlink($filename);
     theme_reset_all_caches();
-    redirect($CFG->wwwroot . '/local/iconchange/list_icon.php', get_string('icondeleted', 'local_iconchange'), null, \core\output\notification::NOTIFY_SUCCESS);
+    redirect($CFG->wwwroot . '/local/iconchange/list_icon.php',
+        get_string('icondeleted', 'local_iconchange'), null, \core\output\notification::NOTIFY_SUCCESS);
 }

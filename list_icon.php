@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/** 
+/**
  * Icon changer
  * A Moodle plugin for changing your theme icons
  * @package     local
@@ -22,10 +22,12 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-include ('../../config.php');
-include ('lib.php');
+require('../../config.php');
+require('lib.php');
 
 defined('MOODLE_INTERNAL') || die('');
+
+require_login();
 
 $title = get_string('changeicons', 'local_iconchange');
 
@@ -43,11 +45,10 @@ echo html_writer::tag('h3', get_string('currenttheme', 'local_iconchange') . ': 
 $activities = array_filter(glob($url), 'is_dir');
 
 if ($activities && !empty($activities)) {
-    $data = IconChange::create_table_data($activities);    
-    $data_table = IconChange::print_table_data($data);
+    $data = IconChange::create_table_data($activities);
+    $datatable = IconChange::print_table_data($data);
 
-    echo $data_table;   
+    echo $datatable;
 }
 
 echo $OUTPUT->footer();
-?>

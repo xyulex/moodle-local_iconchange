@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/** 
+/**
  * Icon changer
  * A Moodle plugin for changing your theme icons
  * @package     local
@@ -22,8 +22,10 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-include ('../../config.php');
+require('../../config.php');
 defined('MOODLE_INTERNAL') || die('');
+
+require_login();
 
 require_once($CFG->dirroot.'/local/iconchange/edit_icon_form.php');
 
@@ -42,24 +44,26 @@ $mform = new edit_icon_form();
 if ($mform->is_cancelled()) {
     redirect(new moodle_url('/local/iconchange/list_icon.php'));
 } else if ($fromform = $mform->get_data()) {
-    
-    $theme_path = $CFG->dirroot.'/theme/'.$CFG->theme; 
 
-    if (!file_exists($theme_path.'/pix_plugins/mod/'.$activityname)) {
-        if (!file_exists($theme_path.'/pix_plugins/')) {
-            mkdir($theme_path.'/pix_plugins/', 0777);
+    $themepath = $CFG->dirroot.'/theme/'.$CFG->theme;
+
+    if (!file_exists($themepath.'/pix_plugins/mod/'.$activityname)) {
+        if (!file_exists($themepath.'/pix_plugins/')) {
+            mkdir($themepath.'/pix_plugins/', 0777);
         }
-        if (!file_exists($theme_path.'/pix_plugins/mod/')) {
-            mkdir($theme_path.'/pix_plugins/mod/', 0777);
+        if (!file_exists($themepath.'/pix_plugins/mod/')) {
+            mkdir($themepath.'/pix_plugins/mod/', 0777);
         }
-        if (!file_exists($theme_path.'/pix_plugins/mod/'.$activityname)) {
-            mkdir($theme_path.'/pix_plugins/mod/'.$activityname, 0777);
+        if (!file_exists($themepath.'/pix_plugins/mod/'.$activityname)) {
+            mkdir($themepath.'/pix_plugins/mod/'.$activityname, 0777);
         }
     }
 
-    $success = $mform->save_file('newicon', $theme_path.'/pix_plugins/mod/'.$activityname.'/icon.png', true);
+    $success = $mform->save_file('newicon',
+        $themepath.'/pix_plugins/mod/'.$activityname.'/icon.png', true);
     theme_reset_all_caches();
-    redirect($CFG->wwwroot . '/local/iconchange/list_icon.php', get_string('iconupdated', 'local_iconchange'), null, \core\output\notification::NOTIFY_SUCCESS);
+    redirect($CFG->wwwroot . '/local/iconchange/list_icon.php',
+        get_string('iconupdated', 'local_iconchange'), null, \core\output\notification::NOTIFY_SUCCESS);
 } else {
     echo $OUTPUT->header();
     echo $OUTPUT->heading(get_string('changeicons', 'local_iconchange') . ': ' . $activityname);
