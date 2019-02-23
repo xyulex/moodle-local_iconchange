@@ -28,15 +28,19 @@ class IconChange{
     public static function get_path() {
         global $CFG, $PAGE;
 
-        if (array_key_exists(0, $PAGE->theme->parents)) {
-            $parent = $PAGE->theme->parents[0];
-            $url = "{$CFG->dirroot}/theme/{$parent}/pix_plugins/mod/*";
+        $parents = $PAGE->theme->parents;
 
-        } else {
-            if ($CFG->theme == 'boost') { // To Do. Boost.
-                $url = "{$CFG->dirroot}/mod/*";
+        $url = "{$CFG->dirroot}/mod/*"; // Default URL.
+
+        $gotparents = array_key_exists(0, $parents);
+
+        if ($parents && $parents[0] !== 'boost') {
+            if ( $gotparents ) {
+                $url = "{$CFG->dirroot}/theme/{$parents[0]}/pix_plugins/mod/*";
             } else {
-                $url = "{$CFG->dirroot}/theme/{$CFG->theme}/pix_plugins/mod/*";
+                if ($CFG->theme !== 'boost') {
+                    $url = "{$CFG->dirroot}/theme/{$CFG->theme}/pix_plugins/mod/*";
+                }
             }
         }
 
