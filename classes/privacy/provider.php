@@ -13,16 +13,27 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+/**
+ * Privacy Subsystem implementation for local_iconchange.
+ *
+ * @package    local_iconchange
+ * @copyright  2019 Raúl Martínez <raulmartinez911@hotmail.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+namespace local_iconchange\privacy;
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname'] = 'Icon change';
-$string['activityname'] = 'Activity name';
-$string['cantcreatedirectory'] = 'Can\'t create directory. Check your permissions';
-$string['changeicons'] = 'Change icons';
-$string['currenttheme'] = 'Current theme';
-$string['deleteconfirm'] = 'Are you sure you want to delete the icon?';
-$string['icondeleted'] = 'Icon deleted successfully';
-$string['iconnotdeleted'] = 'Can\'t delete the icon. Check your permissions';
-$string['iconupdated'] = 'Icon updated successfully';
-$string['privacy:metadata'] = 'The plugin Icon Change does not store any personal data';
+class provider implements \core_privacy\local\metadata\null_provider {
+
+    /**
+     * Get the language string identifier with the component's language
+     * file to explain why this plugin stores no data.
+     *
+     * @return  string
+     */
+    public static function get_reason() : string {
+        return 'privacy:metadata';
+    }
+}

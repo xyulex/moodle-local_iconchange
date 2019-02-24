@@ -25,3 +25,4 @@ $string['deleteconfirm'] = '¿ Estás seguro que quieres borrar el icono?';
 $string['icondeleted'] = 'Icono eliminado correctamente';
 $string['iconnotdeleted'] = 'No se ha podido borrar el icono. Revisa los permisos';
 $string['iconupdated'] = 'Icono actualizado correctamente';
+$string['privacy:metadata'] = 'El plugin Cambiar Iconos no almacena datos personales';
