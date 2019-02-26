@@ -25,7 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->version = 2019022200;
-$plugin->requires = 2017051502.03;
+$plugin->requires = 2018120300;
 $plugin->component = 'local_iconchange';
 $plugin->maturity = MATURITY_BETA;
 $plugin->release  = '1.0.0';
