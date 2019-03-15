@@ -34,7 +34,7 @@ $PAGE->set_context(context_system::instance());
 $PAGE->set_title($deleteicons);
 $PAGE->set_heading($deleteicons);
 
-$deleteiconname = filter_input(INPUT_GET, 'activityname');
+$deleteiconname  = required_param('activityname', PARAM_ALPHA);
 
 // TO DO. Boost.
 $path = "{$CFG->dirroot}/theme/{$CFG->theme}/pix_plugins/mod/";
